@@ -49,12 +49,15 @@ export class CarouselComponent implements OnDestroy {
   @Output()
   activeSlideChange: EventEmitter<any> = new EventEmitter<any>(false);
 
+  _activeSlide: number;
+
   /** Index of currently displayed slide(started for 0) */
   @Input()
   set activeSlide(index: number) {
     if (this._slides.length && index !== this._currentActiveSlide) {
       this._select(index);
     }
+    this._activeSlide = index;
   }
 
   get activeSlide(): number {
@@ -107,8 +110,10 @@ export class CarouselComponent implements OnDestroy {
     this._slides.add(slide);
     if (this._slides.length === 1) {
       this._currentActiveSlide = void 0;
-      this.activeSlide = 0;
       this.play();
+    }
+    if (this._slides.length - 1 >= this._activeSlide) {
+      this.activeSlide = this._activeSlide;
     }
   }
 
